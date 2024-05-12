@@ -68,6 +68,7 @@ dependencies {
   implementation("androidx.compose.material:material-icons-extended:1.5.1")
   implementation("com.auth0.android:jwtdecode:2.0.2")
   implementation("com.google.code.gson:gson:2.10.1")
+  implementation(libs.firebase.ml.vision)
   // camerax dependencies
   // CameraX core library using the camera2 implementation
   val cameraxVersion = "1.4.0-alpha05"
@@ -83,10 +84,12 @@ dependencies {
   implementation(libs.coil.compose)
   // mlkit
   implementation(libs.mlkit.text.recognition)
-  implementation("com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0")
+  //implementation("com.google.android.gms:play-services-mlkit-text-recognition-common:19.0.0")
   // firebase
   implementation(libs.firebase.auth)
   implementation(libs.firebase.auth.ktx)
+  implementation(libs.firebase.functions)
+  implementation(libs.firebase.functions.ktx)
   // google signin dependencies
   implementation(libs.play.services)
 //  implementation(libs.accompanist)

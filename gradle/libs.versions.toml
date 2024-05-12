@@ -10,6 +10,7 @@ activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 firebaseAuth = "23.0.0"
 credentials = "1.2.2"
+firebaseMlVision = "24.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -45,6 +46,8 @@ firebaseBom = { group = "com.google.firebase", name = "firebase-bom", version = 
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx" }
 firestore = { group = "com.google.firebase", name = "firebase-firestore", version = "25.0.0" }
+firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version = "21.0.0" }
+firebase-functions-ktx = { group = "com.google.firebase", name = "firebase-functions-ktx" }
 
 # camerax
 camerax = { group = "androidx.camera", name = "camera-camera2", version = "1.3.3" }
@@ -63,7 +66,7 @@ lottie-compose = { group = "com.airbnb.android", name = "lottie-compose", versio
 google-identity = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version = "1.1.0" }
 #noinspection CredentialDependency
 credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
-
+firebase-ml-vision = { group = "com.google.firebase", name = "firebase-ml-vision", version.ref = "firebaseMlVision" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
