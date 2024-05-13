@@ -1,6 +1,10 @@
 package com.android.finance.manager.view.pages
 
+import CameraScreen
+import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,13 +25,21 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.android.finance.manager.model.Document
 import com.android.finance.manager.model.GoogleUser
 import com.android.finance.manager.ui.components.AppBar
 import com.android.finance.manager.ui.components.DocumentItem
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 
 // Mock data for preview
 // Mock data for preview
@@ -37,7 +49,7 @@ val documentList = listOf(
   Document(3, "Documento 3", "caminho_da_imagem_3")
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun IndexScreen(
   documents: List<Document>,
@@ -45,11 +57,33 @@ fun IndexScreen(
   navigate: NavController,
   user: GoogleUser? = null
 ) {
-  fun openCamera() {
-    Log.i("CAMERA", "openCamera: ")
+  val cameraPermissionState = rememberPermissionState(
+    android.Manifest.permission.CAMERA
+  )
+  val onRequestPermission = cameraPermissionState::launchPermissionRequest
+  val ctx = LocalContext.current
 
-    // Open camera
-    navigate.navigate("camera")
+  // load CameraScreen after clicking the Button
+  if (cameraPermissionState.status.isGranted) {
+    Log.i("IndexScreen", "Camera permission granted")
+
+    LaunchedEffect(Unit) {
+      Log.i("IndexScreen", "caiu aqui")
+    }
+  }
+
+  if (cameraPermissionState.status.shouldShowRationale) {
+    Log.i("IndexScreen", "Camera permission should show rationale")
+    Toast.makeText(ctx, "Precisamos da permissão de câmera", Toast.LENGTH_SHORT).show()
+  }
+
+  if (!cameraPermissionState.status.isGranted) {
+    Log.i("IndexScreen", "Camera permission denied")
+    Toast.makeText(ctx, "Permissão de câmera negada", Toast.LENGTH_SHORT).show()
+  }
+
+  LaunchedEffect(Unit) {
+    Log.i("IndexScreen", "caiu aqui no final")
   }
 
   Surface(modifier = Modifier.fillMaxSize()) {
@@ -58,7 +92,6 @@ fun IndexScreen(
     ) {
       AppBar(
         title = "Documentos",
-        //user = user,
         navController = navigate
       )
       LazyColumn {
@@ -73,10 +106,12 @@ fun IndexScreen(
       }
 
       FloatingActionButton(
-        onClick = { openCamera() },
+        onClick = {
+          onRequestPermission()
+        },
         modifier = Modifier
           .padding(16.dp)
-          .align(Alignment.End),
+          .align(Alignment.End)
       ) {
         Icon(Icons.Filled.Add, contentDescription = "Add")
       }

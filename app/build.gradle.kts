@@ -10,7 +10,7 @@ android {
 
   defaultConfig {
     applicationId = "com.android.finance.manager"
-    minSdk = 34
+    minSdk = 32
     targetSdk = 34
     versionCode = 1
     versionName = "1.0"
@@ -68,7 +68,7 @@ dependencies {
   implementation("androidx.compose.material:material-icons-extended:1.5.1")
   implementation("com.auth0.android:jwtdecode:2.0.2")
   implementation("com.google.code.gson:gson:2.10.1")
-  implementation(libs.firebase.ml.vision)
+  //implementation(libs.firebase.ml.vision)
   // camerax dependencies
   // CameraX core library using the camera2 implementation
   val cameraxVersion = "1.4.0-alpha05"
@@ -80,6 +80,8 @@ dependencies {
 
   implementation("androidx.camera:camera-view:$cameraxVersion")
   implementation("androidx.camera:camera-extensions:$cameraxVersion")
+  // accompanist
+  implementation(libs.accompanist)
   // coil
   implementation(libs.coil.compose)
   // mlkit

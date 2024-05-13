@@ -1,6 +1,9 @@
 package com.android.finance.manager
 
+import CameraScreen
+import android.Manifest
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
@@ -10,10 +13,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.finance.manager.model.SignInState
-import com.android.finance.manager.view.pages.CameraScreen
 import com.android.finance.manager.view.pages.IndexScreen
 import com.android.finance.manager.view.pages.SignIn
 import com.android.finance.manager.view.pages.documentList
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,12 +29,15 @@ class MainActivity : ComponentActivity() {
     }
   }
 
+  @OptIn(ExperimentalPermissionsApi::class)
   @Preview
   @Composable
   fun MyApp() {
     val navController = rememberNavController()
     val state = remember { SignInState() }
-    // var user: GoogleUser? by remember { mutableStateOf(null) }
+    val cameraPermissionState: PermissionState = rememberPermissionState(
+      Manifest.permission.CAMERA
+    )
 
     NavHost(navController = navController, startDestination = "login") {
       composable("login") {
@@ -45,7 +54,15 @@ class MainActivity : ComponentActivity() {
         )
       }
       composable("camera") {
-        CameraScreen()
+        if (cameraPermissionState.status.isGranted) {
+          CameraScreen()
+        } else {
+          Toast.makeText(
+            this@MainActivity,
+            "Permission denied",
+            Toast.LENGTH_SHORT
+          ).show()
+        }
       }
     }
   }

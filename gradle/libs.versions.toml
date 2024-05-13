@@ -33,8 +33,8 @@ androidx-navigation-compose = { group = "androidx.navigation", name = "navigatio
 
 # google signin
 play-services = { group = "com.google.android.gms", name = "play-services-auth", version = "19.2.0" }
-accompanist = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version = "0.27.0" }
-accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version = "0.3.12" }
+accompanist = { group = "com.google.accompanist", name = "accompanist-permissions", version = "0.31.6-rc" }
+# accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions" }
 live-data = { group = "androidx.compose.runtime", name = "runtime-livedata", version = "1.7.0-alpha08" }
 
 # mlkit + coil compose

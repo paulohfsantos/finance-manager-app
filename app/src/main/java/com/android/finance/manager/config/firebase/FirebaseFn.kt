@@ -6,6 +6,8 @@ import com.google.firebase.ktx.Firebase
 
 private lateinit var functions: FirebaseFunctions
 
-fun initFirebaseFunctions() {
+fun initFirebaseFunctions(): FirebaseFunctions {
     functions = Firebase.functions
+
+    return functions
 }

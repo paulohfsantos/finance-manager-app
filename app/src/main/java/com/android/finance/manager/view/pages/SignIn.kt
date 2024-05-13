@@ -15,8 +15,8 @@ import com.google.firebase.BuildConfig
 @Composable
 fun SignIn(state: SignInState, navController: NavController) {
   // var user: GoogleUser? by remember { mutableStateOf(null) }
-  val webClientID = ""
-  val androidClientID = ""
+  val webClientID = "167167482782-2lo5reb76sdo2ndrei1qhj21dk3mm4el.apps.googleusercontent.com"
+  val androidClientID = "167167482782-9jeb5lj83h11u627acdslhnvn7hg8p49.apps.googleusercontent.com"
 
   // use webClientID for web client and androidClientID for android client
   val client = if (BuildConfig.DEBUG) webClientID else androidClientID
