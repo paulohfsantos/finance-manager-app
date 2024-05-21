@@ -68,6 +68,7 @@ dependencies {
   implementation("androidx.compose.material:material-icons-extended:1.5.1")
   implementation("com.auth0.android:jwtdecode:2.0.2")
   implementation("com.google.code.gson:gson:2.10.1")
+  implementation("com.google.firebase:firebase-analytics")
   //implementation(libs.firebase.ml.vision)
   // camerax dependencies
   // CameraX core library using the camera2 implementation

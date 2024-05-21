@@ -1,68 +1,54 @@
 package com.android.finance.manager
 
-import CameraScreen
-import android.Manifest
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.android.finance.manager.model.SignInState
 import com.android.finance.manager.view.pages.IndexScreen
 import com.android.finance.manager.view.pages.SignIn
-import com.android.finance.manager.view.pages.documentList
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
+import com.google.firebase.Firebase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
+  private val firebase: Firebase = Firebase
   override fun onCreate(savedInstanceState: Bundle?) {
+    val firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
     super.onCreate(savedInstanceState)
     setContent {
-      MyApp()
+      MyApp(firebaseAnalytics)
     }
   }
 
-  @OptIn(ExperimentalPermissionsApi::class)
-  @Preview
   @Composable
-  fun MyApp() {
+  fun MyApp(firebaseAnalytics: FirebaseAnalytics) {
     val navController = rememberNavController()
     val state = remember { SignInState() }
-    val cameraPermissionState: PermissionState = rememberPermissionState(
-      Manifest.permission.CAMERA
-    )
+
+    fun setupScreenTracking() {
+      navController.addOnDestinationChangedListener { _, destination, _ ->
+        val params = Bundle().apply {
+          putString(FirebaseAnalytics.Param.SCREEN_NAME, destination.label as String?)
+          putString(FirebaseAnalytics.Param.SCREEN_CLASS, destination.label as String?)
+        }
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, params)
+      }
+    }
+
+    setupScreenTracking() // setup screen tracking
 
     NavHost(navController = navController, startDestination = "login") {
       composable("login") {
-        SignIn(
-          state = state,
-          navController = navController
-        )
+        SignIn(state = state, navController = navController, firebaseAnalytics = firebaseAnalytics)
       }
       composable("home") {
-        IndexScreen(
-          documents = documentList,
-          onItemClick = {},
-          navigate = navController
-        )
-      }
-      composable("camera") {
-        if (cameraPermissionState.status.isGranted) {
-          CameraScreen()
-        } else {
-          Toast.makeText(
-            this@MainActivity,
-            "Permission denied",
-            Toast.LENGTH_SHORT
-          ).show()
-        }
+        IndexScreen(user = firebase.auth.currentUser, firebaseAnalytics = firebaseAnalytics)
       }
     }
   }
